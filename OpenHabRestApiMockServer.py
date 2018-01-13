@@ -7,7 +7,7 @@ import cgi
 
 # Openhab fake items
 class Items:
-    SonosPresets = "RadioEins, Deutschlandfunk, Gute Musik, Blues"
+    SonosPresets = "RadioEins,Deutschlandfunk,Gute Musik,Blues"
     ROOM_SelectedSonosPreset =''
 
 class HTTPRequestHandler(BaseHTTPRequestHandler):
@@ -17,11 +17,13 @@ class HTTPRequestHandler(BaseHTTPRequestHandler):
         if None != re.search('/rest/items/SonosPresets/state', self.path):
             self.send_response(200)
             self.send_header('Content-Type', 'text/plain')
+            self.send_header('Content-Length', len( Items.SonosPresets))
             self.end_headers()
             self.wfile.write(Items.SonosPresets)
         elif None != re.search('/rest/items/ROOM_SelectedSonosPreset/state', self.path):
             self.send_response(200)
             self.send_header('Content-Type', 'text/plain')
+            self.send_header('Content-Length', len( Items.ROOM_SelectedSonosPreset))
             self.end_headers()
             self.wfile.write(Items.ROOM_SelectedSonosPreset)
         else:
@@ -66,7 +68,7 @@ class SimpleHttpServer():
     self.waitForThread()
 
 if __name__=='__main__':
-    server = SimpleHttpServer("127.0.0.1", 8080)
+    server = SimpleHttpServer("10.49.8.193", 8080)
     print 'HTTP Server Running...........'
     server.start()
     server.waitForThread()
